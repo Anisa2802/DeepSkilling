@@ -1,0 +1,125 @@
+1. Understand Asymptotic Notation
+Big O Notation:
+Big O notation is a mathematical notation used to describe the upper bound of an algorithm's time complexity in terms of input size n. It provides a high-level understanding of the algorithm's efficiency and helps in comparing the performance of different algorithms. It essentially characterizes the growth rate of the algorithm's runtime relative to the size of the input.
+O(1): Constant time complexity – the algorithm’s runtime does not change with the size of the input.
+O(n): Linear time complexity – the algorithm’s runtime increases linearly with the size of the input.
+O(log n): Logarithmic time complexity – the algorithm’s runtime increases logarithmically with the size of the input.
+
+Best, Average, and Worst-Case Scenarios for Search Operations:
+Linear Search:
+Best Case: O(1) – The item is found at the first position in the array.
+Average Case: O(n) – On average, the item is found halfway through the array.
+Worst Case: O(n) – The item is found at the last position or not found at all, requiring a full traversal of the array.
+Binary Search:
+Best Case: O(1) – The item is found in the middle of the sorted array.
+Average Case: O(log n) – The search space is halved with each comparison.
+Worst Case: O(log n) – The search space continues to halve until the item is found or the space is exhausted.
+
+2. Setup and Implementation:
+
+import java.util.Arrays;
+import java.util.Comparator;
+
+public class ECommerceSearch {
+
+    // Product class to represent individual products
+    public static class Product {
+        private String productId;
+        private String productName;
+        private String category;
+
+        // Constructor
+        public Product(String productId, String productName, String category) {
+            this.productId = productId;
+            this.productName = productName;
+            this.category = category;
+        }
+
+        // Getters
+        public String getProductId() { return productId; }
+        public String getProductName() { return productName; }
+        public String getCategory() { return category; }
+
+        // Override toString for better representation
+        @Override
+        public String toString() {
+            return "Product ID: " + productId + ", Name: " + productName + ", Category: " + category;
+        }
+    }
+
+    // Search algorithms class
+    public static class SearchAlgorithms {
+
+        // Linear search implementation
+        public static Product linearSearch(Product[] products, String searchTerm) {
+            for (Product product : products) {
+                if (product.getProductId().equals(searchTerm) ||
+                    product.getProductName().equals(searchTerm) ||
+                    product.getCategory().equals(searchTerm)) {
+                    return product;
+                }
+            }
+            return null; // Product not found
+        }
+
+        // Binary search implementation
+        public static Product binarySearch(Product[] products, String searchTerm) {
+            int left = 0;
+            int right = products.length - 1;
+
+            while (left <= right) {
+                int mid = left + (right - left) / 2;
+                Product midProduct = products[mid];
+
+                if (midProduct.getProductId().equals(searchTerm)) {
+                    return midProduct;
+                } else if (midProduct.getProductId().compareTo(searchTerm) < 0) {
+                    left = mid + 1;
+                } else {
+                    right = mid - 1;
+                }
+            }
+            return null; // Product not found
+        }
+
+        // Helper method to sort products by productId
+        public static void sortProductsById(Product[] products) {
+            Arrays.sort(products, Comparator.comparing(Product::getProductId));
+        }
+    }
+
+    // Main method to demonstrate search functionality
+    public static void main(String[] args) {
+        // Create sample products
+        Product[] products = {
+            new Product("P003", "Headphones", "Electronics"),
+            new Product("P001", "Laptop", "Electronics"),
+            new Product("P002", "Smartphone", "Electronics")
+        };
+
+        // Perform linear search
+        String searchTerm = "P002";
+        Product resultLinear = SearchAlgorithms.linearSearch(products, searchTerm);
+        System.out.println("Linear Search Result:");
+        System.out.println(resultLinear != null ? resultLinear : "Product not found");
+
+        // Sort products for binary search
+        SearchAlgorithms.sortProductsById(products);
+
+        // Perform binary search
+        Product resultBinary = SearchAlgorithms.binarySearch(products, searchTerm);
+        System.out.println("\nBinary Search Result:");
+        System.out.println(resultBinary != null ? resultBinary : "Product not found");
+    }
+}
+
+3. Analysis:
+
+Linear Search:
+Time Complexity: O(n)
+Binary Search:
+Time Complexity: O(log n)
+
+For Small Datasets: Linear search might be suitable if the number of products is small, as its simplicity outweighs its inefficiency.
+For Large Datasets: Binary search is more suitable due to its logarithmic time complexity. However, the array must be sorted, so we need to consider the cost of sorting if the data changes frequently.
+

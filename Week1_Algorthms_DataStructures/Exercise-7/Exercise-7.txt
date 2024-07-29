@@ -1,0 +1,39 @@
+1. Understanding Recursive Algorithms:
+
+Concept of Recursion:
+-Recursion is a method of solving a problem where the solution depends on solutions to smaller instances of the same problem. A recursive algorithm solves a problem by breaking it down into simpler sub-problems of the same type.
+Example: In calculating future value, we can break the problem into smaller sub-problems of calculating future value for one fewer year.
+-Recursion can simplify problems that have a repetitive or self-similar structure. In financial forecasting, calculating future value iteratively can be cumbersome, but using recursion can make the solution more intuitive and cleaner.
+
+2. Setup and Implementation:
+
+public class FinancialForecasting {
+
+    // Recursive method to calculate future value
+    public static double calculateFutureValue(double initialValue, double growthRate, int years) {
+        if (years == 0) {
+            return initialValue; // Base case: no growth
+        }
+        // Recursive case: calculate future value by applying the growth rate
+        return calculateFutureValue(initialValue * (1 + growthRate), growthRate, years - 1);
+    }
+
+    // Main method to demonstrate functionality
+    public static void main(String[] args) {
+        double initialValue = 1000.0; // Initial value
+        double growthRate = 0.05; // 5% growth rate per year
+        int years = 10; // Number of years to forecast
+
+        double futureValue = calculateFutureValue(initialValue, growthRate, years);
+        System.out.printf("Future Value after %d years: %.2f%n", years, futureValue);
+    }
+}
+
+3. Analysis:
+
+Time Complexity:
+The time complexity of this recursive algorithm is O(n), where n is the number of years. Each recursive call processes one year, resulting in n calls.
+
+Optimization (Avoiding Excessive Computation):
+Memorization: To avoid recalculating values for the same year multiple times, we can use memorization. This technique stores the results of expensive function calls and returns the cached result when the same inputs occur again.
+Iterative Approach: For large numbers of years, an iterative approach might be more efficient. An iterative version avoids the overhead of recursive calls and stack usage.
